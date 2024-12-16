@@ -33,6 +33,3 @@ if (isset($_POST["submit"])) {
 ?>
 </body>
 </html>
-
-</body>
-</html>
