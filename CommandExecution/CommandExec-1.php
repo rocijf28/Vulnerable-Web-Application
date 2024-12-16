@@ -22,21 +22,28 @@
   </div>
   <div style="background-color:#ecf2d0;padding:20px;border-radius:0px 0px 20px 20px" align="center">
     <?php
-if (isset($_GET["username"])) {
-    $allowedCommands = ['Admin']; // Lista de comandos permitidos
-    $inputCommand = $_GET["username"];
+    if (isset($_POST["submit"])) {
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["file"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $type = $_FILES["file"]["type"];
     
-    if (in_array($inputCommand, $allowedCommands, true)) {
-        echo shell_exec($inputCommand);
-    } else {
-        echo "Command not allowed.";
+        if ($type != "image/png" && $type != "image/jpeg") {
+            echo "Only JPG, JPEG, and PNG files are allowed.";
+            $uploadOk = 0;
+        }
+    
+        if ($uploadOk == 1) {
+            if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+                $sanitized_filename = htmlspecialchars(basename($_FILES["file"]["name"]), ENT_QUOTES, 'UTF-8');
+                echo "File uploaded to /uploads/" . $sanitized_filename;
+            } else {
+                echo "There was an error uploading your file.";
+            }
+        }
     }
-
-    if ($inputCommand === "Admin" && $_GET["password"] === "ufoundmypassword") {
-        echo "WELLDONE";
-    }
-}
-?>
+    ?>
   </div>
   </body>
 </html>
