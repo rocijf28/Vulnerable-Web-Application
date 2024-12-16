@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>  
    <head>
       <meta charset="utf-8">
@@ -18,24 +19,20 @@
       <a href=lvl4.php?file=2.php><button>The Other Button!</button></a>
       </div>
       
-      <?php     
-        echo "</br></br>";
-
-        if (isset( $_GET[ 'file' ])) 
-        {
-          $secure4 = $_GET[ 'file' ];
-         
-            if ($secure4!="1.php" && $secure4!="2.php") 
-            {
-              $secure4=substr($secure4, 0,-4);
-            }
-            
-            if (isset($secure4)) 
-            {        
-              include($secure4);              
-            }
-        }              
+      <?php
+      echo "</br></br>";
+      if (isset($_GET['file'])) {
+          $allowedFiles = ['1.php', '2.php']; // Lista blanca de archivos permitidos
+          $secure4 = basename($_GET['file']); // Asegura que el nombre del archivo no contenga rutas
+      
+          if (in_array($secure4, $allowedFiles, true)) {
+              include $secure4; // Incluye solo archivos de la lista blanca
+          } else {
+              echo "Invalid file.";
+          }
+      }
       ?>
+
    </body>
 </html>
 
