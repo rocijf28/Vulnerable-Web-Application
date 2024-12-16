@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
    <head>
       <meta charset="utf-8">
@@ -16,15 +17,22 @@
       <a href=lvl1.php?file=1.php><button>Button</button></a>
       <a href=lvl1.php?file=2.php><button>The Other Button!</button></a>
       </div>
-      
+            
       <?php
-        echo "</br></br>";
-        
-        if (isset( $_GET[ 'file' ]))        
-        {
-          @include($_GET[ 'file' ]);
-          echo"<div align='center'><b><h5>".$_GET[ 'file' ]."</h5></b></div> ";       
-        }
+      echo "</br></br>";
+      
+      if (isset($_GET['file'])) {
+          $allowedFiles = ['page1.php', 'page2.php']; // Lista de archivos permitidos
+          $requestedFile = basename($_GET['file']); // Elimina directorios para evitar traversal
+      
+          if (in_array($requestedFile, $allowedFiles, true)) {
+              include $requestedFile;
+          } else {
+              echo "File not allowed.";
+          }
+      
+          echo "<div align='center'><b><h5>" . htmlspecialchars($requestedFile, ENT_QUOTES, 'UTF-8') . "</h5></b></div>";
+      }
       ?>
    </body>
 </html>
