@@ -7,14 +7,17 @@
 </head>
 <body>
     <form method="GET" action="">
-        <p>Your name: <input type="text" name="username"></p>
+        <p>Your name: <input type="text" name="username" required></p>
         <input type="submit" name="submit" value="Submit">
     </form>
     <div>
         <?php
         if (isset($_GET["username"])) {
-            // Escapar la entrada del usuario para prevenir XSS
-            $safeUsername = htmlspecialchars($_GET["username"], ENT_QUOTES, 'UTF-8');
+            // Validar y sanitizar la entrada del usuario
+            $username = trim($_GET["username"]); // Eliminar espacios en blanco
+            $safeUsername = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
+
+            // Mostrar salida segura
             echo "Your name is " . $safeUsername;
         }
         ?>
