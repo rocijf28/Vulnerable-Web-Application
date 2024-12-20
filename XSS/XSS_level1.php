@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XSS Prevention Example</title>
+    <title>Secure XSS Example</title>
 </head>
 <body>
     <form method="GET" action="">
@@ -13,7 +13,7 @@
     <div>
         <?php
         if (isset($_GET["username"])) {
-            // Escapar la salida para prevenir XSS
+            // Escapar la entrada del usuario para prevenir XSS
             $safeUsername = htmlspecialchars($_GET["username"], ENT_QUOTES, 'UTF-8');
             echo "Your name is " . $safeUsername;
         }
