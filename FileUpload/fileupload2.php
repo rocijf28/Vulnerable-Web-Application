@@ -20,24 +20,32 @@
 <?php
 
 // Check if image file is a actual image or fake image
-if(isset($_POST["submit"])) {
-	$target_dir = "uploads/";
-	$target_file = $target_dir . basename($_FILES["file"]["name"]);
-	$uploadOk = 1;
-	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-	$type = $_FILES["file"]["type"];
-
-    if($type != "image/png" && $type != "image/jpeg" ){
-        echo "JPG, JPEG, PNG & GIF files are allowed.";
+<?php
+// Check if image file is an actual image or fake image
+if (isset($_POST["submit"])) {
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($_FILES["file"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $type = $_FILES["file"]["type"];
+    
+    // Validate file type
+    if ($type != "image/png" && $type != "image/jpeg") {
+        echo "JPG, JPEG, and PNG files are allowed.";
         $uploadOk = 0;
     }
-    
-    if($uploadOk == 1){
-        move_uploaded_file($_FILES["file"]["tmp_name"], $target_file);
-        echo "File uploaded /uploads/".$_FILES["file"]["name"];
+
+    if ($uploadOk == 1) {
+        // Move the uploaded file
+        if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+            // Escapar salida para prevenir XSS
+            $safeFileName = htmlspecialchars(basename($_FILES["file"]["name"]), ENT_QUOTES, 'UTF-8');
+            echo "File uploaded to /uploads/" . $safeFileName;
+        } else {
+            echo "There was an error uploading the file.";
+        }
     }
 }
 ?>
-
 </body>
 </html>
